@@ -147,6 +147,13 @@ int main(int argc, char **argv, char **envp)
 {
     int ch;
 
+    int had_posixly_correct = 0;
+    if(getenv("POSIXLY_CORRECT")) {
+        had_posixly_correct = 1;
+    } else {
+        putenv("POSIXLY_CORRECT=1");
+    }
+
     while((ch = getopt_long(argc, argv, "hvl:p:", cmdLineOpts, NULL)) != -1) {
         switch(ch) {
             case 'h':
@@ -179,6 +186,9 @@ int main(int argc, char **argv, char **envp)
                 usage();
         }
     }
+
+    if(!had_posixly_correct)
+        unsetenv("POSIXLY_CORRECT");
 
     argc -= optind;
     argv += optind;
