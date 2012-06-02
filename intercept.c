@@ -35,7 +35,7 @@ int libfakeroot_patch_func(const char *name)
 
     err = vm_protect(mach_task_self(),
             (vm_address_t) fptr, 32, false,
-            VM_PROT_READ | VM_PROT_WRITE);
+            VM_PROT_READ | VM_PROT_WRITE | VM_PROT_EXECUTE);
 
     if(err) return EFAULT;
 
