@@ -1,24 +1,21 @@
-extern _libfakeroot_sysenter_hook
-global _libfakeroot_sysenter_landing
+.globl _libfakeroot_sysenter_landing
 
 _libfakeroot_sysenter_landing:
-    enter   0x40, 0
-    mov     [rbp-0x40], rdi ; copy args to buffer
-    mov     [rbp-0x38], rsi
-    mov     [rbp-0x30], rdx
-    mov     [rbp-0x28], rcx
-    mov     [rbp-0x20], r8
-    mov     [rbp-0x18], r9 
-    mov     r8, [rbp+0x10]  ; copy the stack arguments
-    mov     r9, [rbp+0x18]
-    mov     [rbp-0x10], r8
-    mov     [rbp-0x08], r9
+    enter   $0x40, $0
+    mov     %rdi, -0x40(%rbp)   // copy args to buffer
+    mov     %rsi, -0x38(%rbp)
+    mov     %rdx, -0x30(%rbp)
+    mov     %rcx, -0x28(%rbp)
+    mov     %r8, -0x20(%rbp)
+    mov     %r9, -0x18(%rbp)
+    mov     0x10(%rbp), %r8     // copy the stack arguments
+    mov     0x18(%rbp), %r9
+    mov     %r8, -0x10(%rbp)
+    mov     %r9, -0x08(%rbp)
 
-    mov     rdi, rax        ; callno
-    lea     rsi, [rbp-0x40] ; argv
+    mov     %rax, %rdi          // callno
+    lea     -0x40(%rbp), %rsi   // argv
 
     call    _libfakeroot_sysenter_hook
     leave
     ret
-
-; vim: set syn=nasm:

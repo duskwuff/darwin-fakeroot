@@ -1,10 +1,8 @@
 VERSION = 1.0
 #DEBUG = 1
 
-CC = gcc-4.2
-NASM = nasm
-#or specify a path: NASM = /usr/local/bin/nasm
-#also works with: NASM = yasm
+CC = gcc
+AS = as
 
 PREFIX ?= /usr/local
 
@@ -34,8 +32,10 @@ libfakeroot.dylib: libfakeroot.o sysenter.o intercept.o communicate.o
 	gcc $(CFLAGS) $(LDFLAGS) $(DYLIBFLAGS) $+ -o $@
 sysenter.o: sysenter-32.o sysenter-64.o
 	lipo -create $+ -output $@
-sysenter-%.o: sysenter-%.s
-	$(NASM) -f macho$* $+ -o $@ 
+sysenter-32.o: sysenter-32.s
+	$(AS) -arch i386 $+ -o $@
+sysenter-64.o: sysenter-64.s
+	$(AS) -arch x86_64 $+ -o $@
 
 install:
 	install -d -m755 $(DESTDIR)$(PREFIX)/bin
