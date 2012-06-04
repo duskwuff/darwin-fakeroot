@@ -43,7 +43,6 @@ int set_owner(int fd, dev_t dev, ino_t ino, uid_t uid, gid_t gid)
     }
 
     struct comm_pkt pkt = {
-        .cookie = 0,
         .action = SET_OWNER,
         .dev = dev,
         .ino = ino,
@@ -72,7 +71,6 @@ int get_owner(int fd, dev_t dev, ino_t ino, uid_t *uid, gid_t *gid)
     }
 
     struct comm_pkt pkt = {
-        .cookie = 0,
         .action = GET_OWNER,
         .dev = dev,
         .ino = ino,
